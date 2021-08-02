@@ -100,6 +100,7 @@ bufferAngle = 15
 
 
 def unit_vector(vector):
+    vector = np.array(vector)
     return vector / np.linalg.norm(vector)
 
 
@@ -153,228 +154,46 @@ def ids_rids(arg1):
     return switch.get(arg1)
 
 
-def storeB1(x, y, vx, vy):
-    global B1CX
-    global B1CY
-    global B1CVx
-    global B1CVy
-    global B1V
-    B1CX = x  # x-value of B1 center
-    B1CY = y  # y-value of B1 center
-    B1CVx = vx  # x-value of B1 vector
-    B1CVy = vy  # y-value of B1 vector
-    B1C = (x, y)  # B1 center tuple
-    B1V = (vx, vy)  # B1 vector tuple
-    # print(B1CVx, B1CVy)
+class StoreB:
+    def __init__(this, x, y, vx, vy, name):
+        this.name = name
+        this.BCX = x  # x-value of B1 center
+        this.BCY = y  # y-value of B1 center
+        this.BCVx = vx  # x-value of B1 vector
+        this.BCVy = vy  # y-value of B1 vector
+        this.BC = (x, y)  # B1 center tuple
+        this.BV = (vx, vy)  # B1 vector tuple
+        # print(B1CVx, B1CVy)
 
 
-def storeB2(x, y, vx, vy):
-    global B2CX
-    global B2CY
-    global B2CVx
-    global B2CVy
-    global B2V
-    B2CX = x
-    B2CY = y
-    B2CVx = vx
-    B2CVy = vy
-    B2C = (x, y)
-    B2V = (vx, vy)
+class StoreS:
+    def __init__(self, x, y, vx, vy, name):
+        self.name = name
+        self.SCX = x
+        self.SCY = y
+        self.SCVx = vx
+        self.SCVy = vy
+        self.SC = (x, y)
+        self.SV = (vx, vy)
 
 
-def storeB3(x, y, vx, vy):
-    global B3CX
-    global B3CY
-    global B3CVx
-    global B3CVy
-    global B3V
-    B3CX = x
-    B3CY = y
-    B3CVx = vx
-    B3CVy = vy
-    B3C = (x, y)
-    B3V = (vx, vy)
+class StoreD:
+    def __init__(self, x, y, vx, vy, name):
+        self.DCX = x
+        self.DCY = y
+        self.DCVx = vx
+        self.DCVy = vy
+        self.DC = (x, y)
+        self.DV = (vx, vy)
 
 
-def storeB4(x, y, vx, vy):
-    global B4CX
-    global B4CY
-    global B4CVx
-    global B4CVy
-    global B4V
-    B4CX = x
-    B4CY = y
-    B4CVx = vx
-    B4CVy = vy
-    B4C = (x, y)
-    B4V = (vx, vy)
-
-
-def storeS1(x, y, vx, vy):
-    global S1CX
-    global S1CY
-    global S1CVx
-    global S1CVy
-    global S1V
-    S1CX = x
-    S1CY = y
-    S1CVx = vx
-    S1CVy = vy
-    S1C = (x, y)
-    S1V = (vx, vy)
-
-
-def storeS2(x, y, vx, vy):
-    global S2CX
-    global S2CY
-    global S2CVx
-    global S2CVy
-    global S2V
-    S2CX = x
-    S2CY = y
-    S2CVx = vx
-    S2CVy = vy
-    S2C = (x, y)
-    S2V = (vx, vy)
-
-
-def storeS3(x, y, vx, vy):
-    global S3CX
-    global S3CY
-    global S3CVx
-    global S3CVy
-    global S3V
-    S3CX = x
-    S3CY = y
-    S3CVx = vx
-    S3CVy = vy
-    S3C = (x, y)
-    S3V = (vx, vy)
-
-
-def storeS4(x, y, vx, vy):
-    global S4CX
-    global S4CY
-    global S4CVx
-    global S4CVy
-    global S4V
-    S4CX = x
-    S4CY = y
-    S4CVx = vx
-    S4CVy = vy
-    S4C = (x, y)
-    S4V = (vx, vy)
-
-
-def storeD1(x, y, vx, vy):
-    global D1CX
-    global D1CY
-    global D1CVx
-    global D1CVy
-    global D1V
-    D1CX = x
-    D1CY = y
-    D1CVx = vx
-    D1CVy = vy
-    D1C = (x, y)
-    D1V = (vx, vy)
-
-
-def storeD2(x, y, vx, vy):
-    global D2CX
-    global D2CY
-    global D2CVx
-    global D2CVy
-    D2CX = x
-    D2CY = y
-    D2CVx = vx
-    D2CVy = vy
-    D2C = (x, y)
-    D2V = (vx, vy)
-
-
-def storeD3(x, y, vx, vy):
-    global D3CX
-    global D3CY
-    global D3CVx
-    global D3CVy
-    global D3V
-    D3CX = x
-    D3CY = y
-    D3CVx = vx
-    D3CVy = vy
-    D3C = (x, y)
-    D3V = (vx, vy)
-
-
-def storeD4(x, y, vx, vy):
-    global D4CX
-    global D4CY
-    global D4CVx
-    global D4CVy
-    global D4V
-    D4CX = x
-    D4CY = y
-    D4CVx = vx
-    D4CVy = vy
-    D4C = (x, y)
-    D4V = (vx, vy)
-
-
-def storeT1(x, y, vx, vy):
-    global T1CX
-    global T1CY
-    global T1CVx
-    global T1CVy
-    global T1V
-    T1CX = x
-    T1CY = y
-    T1CVx = vx
-    T1CVy = vy
-    T1C = (x, y)
-    T1V = (vx, vy)
-
-
-def storeT2(x, y, vx, vy):
-    global T2CX
-    global T2CY
-    global T2CVx
-    global T2CVy
-    global T2V
-    T2CX = x
-    T2CY = y
-    T2CVx = vx
-    T2CVy = vy
-    T2C = (x, y)
-    T2V = (vx, vy)
-
-
-def storeT3(x, y, vx, vy):
-    global T3CX
-    global T3CY
-    global T3CVx
-    global T3CVy
-    global T3V
-    T3CX = x
-    T3CY = y
-    T3CVx = vx
-    T3CVy = vy
-    T3C = (x, y)
-    T3V = (vx, vy)
-
-
-def storeT4(x, y, vx, vy):
-    global T4CX
-    global T4CY
-    global T4CVx
-    global T4CVy
-    global T4V
-    T4CX = x
-    T4CY = y
-    T4CVx = vx
-    T4CVy = vy
-    T4C = (x, y)
-    T4V = (vx, vy)
+class StoreT:
+    def __init__(self, x, y, vx, vy, name):
+        self.TCX = x
+        self.TCY = y
+        self.TCVx = vx
+        self.TCVy = vy
+        self.TC = (x, y)
 
 
 def sendSignal(signal):
@@ -1825,37 +1644,37 @@ def findArucoMarkers(img, MarkerSize=5, totalMarkers=250, draw=True):
         arg2 = ids_rids(arg1)
 
         if arg2 == "FKMP0001":
-            storeB1(x, y, vx, vy)
+            B1 = StoreB(x, y, vx, vy, "B1")
         elif arg2 == "FKMP0002":
-            storeB2(x, y, vx, vy)
+            B2 = StoreB(x, y, vx, vy, "B2")
         elif arg2 == "FKMP0003":
-            storeB3(x, y, vx, vy)
+            B3 = StoreB(x, y, vx, vy, "B3")
         elif arg2 == "FKMP0004":
-            storeB4(x, y, vx, vy)
+            B4 = StoreB(x, y, vx, vy, "B4")
         elif arg2 == "S1":
-            storeS1(x, y, vx, vy)
+            S1 = StoreB(x, y, vx, vy, "S1")
         elif arg2 == "S2":
-            storeS2(x, y, vx, vy)
+            S2 = StoreB(x, y, vx, vy, "S2")
         elif arg2 == "S3":
-            storeS3(x, y, vx, vy)
+            S3 = StoreB(x, y, vx, vy, "S3")
         elif arg2 == "S4":
-            storeS4(x, y, vx, vy)
+            S4 = StoreB(x, y, vx, vy, "S4")
         elif arg2 == "D1":
-            storeD1(x, y, vx, vy)
+            D1 = StoreD(x, y, vx, vy, "D1")
         elif arg2 == "D2":
-            storeD2(x, y, vx, vy)
+            D2 = StoreD(x, y, vx, vy, "D2")
         elif arg2 == "D3":
-            storeD3(x, y, vx, vy)
+            D3 = StoreD(x, y, vx, vy, "D3")
         elif arg2 == "D4":
-            storeD4(x, y, vx, vy)
+            D4 = StoreD(x, y, vx, vy, "D4")
         elif arg2 == "T1":
-            storeT1(x, y, vx, vy)
+            T1 = StoreT(x, y, vx, vy, "T1")
         elif arg2 == "T2":
-            storeT2(x, y, vx, vy)
+            T2 = StoreT(x, y, vx, vy, "T2")
         elif arg2 == "T3":
-            storeT3(x, y, vx, vy)
+            T3 = StoreT(x, y, vx, vy, "T3")
         elif arg2 == "T4":
-            storeT4(x, y, vx, vy)
+            T1 = StoreT(x, y, vx, vy, "T4")
 
         cv2.line(img, (int(c1[0]), int(c1[1])), (int(c2[0]), int(c2[1])), (0, 255, 0), 2)
         cv2.line(img, (int(c2[0]), int(c2[1])), (int(c3[0]), int(c3[1])), (0, 255, 0), 2)
@@ -1950,6 +1769,290 @@ def main():
 
     cap.release()
     cv2.destroyAllWindows()
+
+
+def runLogicBOT(bot: StoreB, turn: StoreT, dest: StoreD, img, p, operationNo, q):
+    # BOT moving forward towards turn
+    if operationNo == 0:
+
+        cv2.line(img, (bot.BCX, bot.BCY), (turn.TCX, turn.TCY), (0, 255, 255), 2)
+        # cv2.line(img, (T3CX-buffer, T3CY-buffer), (T3CX+buffer, T3CY-buffer), (255, 255, 0), 2)
+        # cv2.line(img, (T3CX+buffer, T3CY-buffer), (T3CX+buffer, T3CY+buffer), (255, 255, 0), 2)
+        # cv2.line(img, (T3CX+buffer, T3CY+buffer), (T3CX-buffer, T3CY+buffer), (255, 255, 0), 2)
+        # cv2.line(img, (T3CX-buffer, T3CY+buffer), (T3CX-buffer, T3CY-buffer), (255, 255, 0), 2)
+
+        cv2.line(img, (0, turn.TCY - buffer), (imgx, turn.TCY - buffer), (255, 255, 0), 2)
+        cv2.line(img, (turn.TCX + buffer, 0), (turn.TCX + buffer, imgy), (255, 255, 0), 2)
+        cv2.line(img, (imgx, turn.TCY + buffer), (0, turn.TCY + buffer), (255, 255, 0), 2)
+        cv2.line(img, (turn.TCX - buffer, imgy), (turn.TCX - buffer, 0), (255, 255, 0), 2)
+
+        if bot.BCX < turn.TCX - buffer and bot.BCY < turn.TCY - buffer:
+            # Forward-Left
+            sendSignal("3H")
+            return 0, "BOT3"
+        if bot.BCX > turn.TCX + buffer and bot.BCY < turn.TCY - buffer:
+            # Forward-Right
+            sendSignal("3G")
+            return 0, "BOT3"
+        if bot.BCX < T3CX - buffer and bot.BCY > T3CY + buffer:
+            # Backward-Left
+            sendSignal("3J")
+            return 0, "BOT3"
+        if bot.BCX > turn.TCX + buffer and bot.BCY > turn.TCY + buffer:
+            # Backward-Right
+            sendSignal("3I")
+            return 0, "BOT3"
+        if turn.TCX - buffer <= bot.BCX <= turn.TCX + buffer and bot.BCY < turn.TCY - buffer:
+            # Forward
+            sendSignal("3B")
+            return 0, "BOT3"
+        if turn.TCX - buffer <= bot.BCX <= turn.TCX + buffer and bot.BCY > turn.TCY + buffer:
+            # Backward
+            sendSignal("3C")
+            p = 0
+            q = "BOT3"
+            return 0, "BOT3"
+        if bot.BCX < turn.TCX - buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
+            # Backward-Left
+            sendSignal("3J")
+            return 0, "BOT3"
+        if bot.BCX > turn.TCX + buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
+            # Backward-Right
+            sendSignal("3I")
+            return 0, "BOT3"
+        if T3CX - buffer <= B3CX <= T3CX + buffer and T3CY - buffer <= B3CY <= T3CY + buffer:
+            # Idle
+            sendSignal("3A")
+            return 1, "BOT3"
+
+    # BOT3 moving turning at T3 towards D3
+    if operationNo == 1:
+        B3Vu = unit_vector(bot.BV)  # Making into unit vector
+        D3Vu = unit_vector(dest.DV)  # Making into unit vector
+
+        angle = angle_between(B3Vu, D3Vu)
+        angleDeg = angle * 57.29577952326092822 // 1
+        # print(angleDeg)
+
+        Ux = math.cos(math.radians(bufferAngle)) * 100 // 1
+        Uy = math.sin(math.radians(bufferAngle)) * 100 // 1
+        # print(Ux, Uy)
+
+        cv2.line(img, (B3CX, B3CY), (D3CX, D3CY), (0, 255, 255), 2)
+        cv2.line(img, (B3CX, B3CY), (B3CX + int(Ux), B3CY - int(Uy)), (255, 255, 0), 2)
+        cv2.line(img, (B3CX, B3CY), (B3CX + int(Ux), B3CY + int(Uy)), (255, 255, 0), 2)
+
+        if angleDeg > bufferAngle:
+            # Turn Left
+            sendSignal("3E")
+            return 1, "BOT3"
+        elif angleDeg <= bufferAngle:
+            # Idle
+            sendSignal("3A")
+            p = 2
+            q = "BOT3"
+            return 2, "BOT3"
+
+    # BOT3 moving forward towards D3
+    if operationNo == 2:
+
+        cv2.line(img, (bot.BCX, bot.BCY), (dest.DCX, dest.DCY), (0, 255, 255), 2)
+        # cv2.line(img, (D3CX - buffer, D3CY - buffer), (D3CX + buffer, D3CY - buffer), (255, 255, 0), 2)
+        # cv2.line(img, (D3CX + buffer, D3CY - buffer), (D3CX + buffer, D3CY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (D3CX + buffer, D3CY + buffer), (D3CX - buffer, D3CY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (D3CX - buffer, D3CY + buffer), (D3CX - buffer, D3CY - buffer), (255, 255, 0), 2)
+
+        cv2.line(img, (0, dest.DCY - buffer), (imgx, dest.DCY - buffer), (255, 255, 0), 2)
+        cv2.line(img, (dest.DCX + buffer, 0), (dest.DCX + buffer, imgy), (255, 255, 0), 2)
+        cv2.line(img, (imgx, dest.DCY + buffer), (0, dest.DCY + buffer), (255, 255, 0), 2)
+        cv2.line(img, (dest.DCX - buffer, imgy), (dest.DCX - buffer, 0), (255, 255, 0), 2)
+
+        if bot.BCX < bot.BCX - buffer and bot.BCY < dest.DCY - buffer:
+            # Forward-Right
+            sendSignal("3G")
+            return 2, "BOT3"
+        elif bot.BCX > dest.DCX + buffer and bot.BCY < dest.DCY - buffer:
+            # Backward-Right
+            sendSignal("3I")
+            return 2, "BOT3"
+        elif bot.BCX < dest.DCX - buffer and bot.BCY > dest.DCY + buffer:
+            # Forward-Left
+            sendSignal("3H")
+            return 2, "BOT3"
+        elif bot.BCX > dest.DCX + buffer and bot.BCY > dest.DCY + buffer:
+            # Backward-Left
+            sendSignal("3J")
+            return 2, "BOT3"
+        elif dest.DCX - buffer <= bot.BCX <= dest.DCX + buffer and bot.BCY < dest.DCY - buffer:
+            # Backward-Right
+            sendSignal("3I")
+            return 2, "BOT3"
+        elif dest.DCX - buffer <= bot.BCX <= dest.DCX + buffer and bot.BCY > dest.DCY + buffer:
+            # Backward-Left
+            sendSignal("3J")
+            return 2, "BOT3"
+        elif bot.BCX < dest.DCX - buffer and dest.DCY - buffer <= bot.BCY <= dest.DCY + buffer:
+            # Forward
+            sendSignal("3B")
+            return 2, "BOT3"
+        elif bot.BCX > dest.DCX + buffer and dest.DCY - buffer <= bot.BCY <= dest.DCY + buffer:
+            # Backward
+            sendSignal("3C")
+            return 2, "BOT3"
+        elif dest.DCX - buffer <= bot.BCX <= dest.DCX + buffer and dest.DCY - buffer <= bot.BCY <= dest.DCY + buffer:
+            # Idle
+            sendSignal("3A")
+            return 3, "BOT3"
+
+    # BOT3 dropping package
+    if operationNo == 3:
+        sendSignal("3F")
+        return 4, "BOT3"
+
+    # BOT3 moving backwards towards T3
+    if operationNo == 4:
+
+        cv2.line(img, (bot.BCX, bot.BCY), (turn.TCX, turn.TCY), (0, 255, 255), 2)
+        # cv2.line(img, (turn.TCX - buffer, turn.TCY - buffer), (turn.TCX + buffer, turn.TCY - buffer), (255, 255, 0), 2)
+        # cv2.line(img, (turn.TCX + buffer, turn.TCY - buffer), (turn.TCX + buffer, turn.TCY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (turn.TCX + buffer, turn.TCY + buffer), (turn.TCX - buffer, turn.TCY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (turn.TCX - buffer, turn.TCY + buffer), (turn.TCX - buffer, turn.TCY - buffer), (255, 255, 0), 2)
+
+        cv2.line(img, (0, turn.TCY - buffer), (imgx, turn.TCY - buffer), (255, 255, 0), 2)
+        cv2.line(img, (turn.TCX + buffer, 0), (turn.TCX + buffer, imgy), (255, 255, 0), 2)
+        cv2.line(img, (imgx, turn.TCY + buffer), (0, turn.TCY + buffer), (255, 255, 0), 2)
+        cv2.line(img, (turn.TCX - buffer, imgy), (turn.TCX - buffer, 0), (255, 255, 0), 2)
+
+        if bot.BCX < turn.TCX - buffer and bot.BCY < turn.TCY - buffer:
+            # Forward-Right
+            sendSignal("3G")
+            return 4,"BOT3"
+        elif bot.BCX > turn.TCX + buffer and bot.BCY < turn.TCY - buffer:
+            # Backward-Right
+            sendSignal("3I")
+            return 4,"BOT3"
+        elif bot.BCX < turn.TCX - buffer and bot.BCY > turn.TCY + buffer:
+            # Forward-Left
+            sendSignal("3H")
+            return 4,"BOT3"
+        elif bot.BCX > turn.TCX + buffer and bot.BCY > turn.TCY + buffer:
+            signal = "3J"  # Backward-Left
+            sendSignal(signal)
+            p = 4
+            q = "BOturn.T"
+            return p, q
+        elif turn.TCX - buffer <= bot.BCX <= turn.TCX + buffer and bot.BCY < turn.TCY - buffer:
+            signal = "3G"  # Forward-Right
+            sendSignal(signal)
+            p = 4
+            q = "BOturn.T"
+            return p, q
+        elif turn.TCX - buffer <= bot.BCX <= turn.TCX + buffer and bot.BCY > turn.TCY + buffer:
+            signal = "3H"  # Forward-Left
+            sendSignal(signal)
+            p = 4
+            q = "BOturn.T"
+            return p, q
+        elif bot.BCX < turn.TCX - buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
+            signal = "3B"  # Forward
+            sendSignal(signal)
+            p = 4
+            q = "BOturn.T"
+            return p, q
+        elif bot.BCX > turn.TCX + buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
+            signal = "3C"  # Backward
+            sendSignal(signal)
+            p = 4
+            q = "BOturn.T"
+            return p, q
+        elif turn.TCX - buffer <= bot.BCX <= turn.TCX + buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
+            signal = "3A"  # Idle
+            sendSignal("3A")
+            p = 5
+            q = "BOturn.T"
+            return p, q
+
+    #  BOT3 moving turning at T3 towards S3
+    if operationNo == 5:
+
+        B3Vu = unit_vector(bot.BV)  # Making into unit vector
+        S3Vu = unit_vector(S3V)  # Making into unit vector
+
+        angle = angle_between(B3Vu, S3Vu)
+        angleDeg = angle * 57.29577952326092822 // 1
+        # print(angleDeg)
+
+        Ux = math.cos(math.radians(bufferAngle)) * 100 // 1
+        Uy = math.sin(math.radians(bufferAngle)) * 100 // 1
+        # print(Ux, Uy)
+
+        cv2.line(img, (B3CX, B3CY), (S3CX, S3CY), (0, 255, 255), 2)
+        cv2.line(img, (B3CX, B3CY), (B3CX + int(Uy), B3CY + int(Ux)), (255, 255, 0), 2)
+        cv2.line(img, (B3CX, B3CY), (B3CX - int(Uy), B3CY + int(Ux)), (255, 255, 0), 2)
+
+        if angleDeg > bufferAngle:
+            signal = "3D"  # Turn Right
+            sendSignal(signal)
+            p = 5
+            q = "BOT3"
+            return p, q
+        elif angleDeg <= bufferAngle:
+            signal = "3A"  # Idle
+            sendSignal(signal)
+            p = 6
+            q = "BOT3"
+            return p, q
+
+    # BOT3 moving backwards towards S3
+    if operationNo == 6:
+
+        cv2.line(img, (B3CX, B3CY), (S3CX, S3CY), (0, 255, 255), 2)
+        # cv2.line(img, (S3CX - buffer, S3CY - buffer), (S3CX + buffer, S3CY - buffer), (255, 255, 0), 2)
+        # cv2.line(img, (S3CX + buffer, S3CY - buffer), (S3CX + buffer, S3CY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (S3CX + buffer, S3CY + buffer), (S3CX - buffer, S3CY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (S3CX - buffer, S3CY + buffer), (S3CX - buffer, S3CY - buffer), (255, 255, 0), 2)
+
+        cv2.line(img, (0, S3CY - buffer), (imgx, S3CY - buffer), (255, 255, 0), 2)
+        cv2.line(img, (S3CX + buffer, 0), (S3CX + buffer, imgy), (255, 255, 0), 2)
+        cv2.line(img, (imgx, S3CY + buffer), (0, S3CY + buffer), (255, 255, 0), 2)
+        cv2.line(img, (S3CX - buffer, imgy), (S3CX - buffer, 0), (255, 255, 0), 2)
+
+        if B3CX < S3CX - buffer and B3CY < S3CY - buffer:
+            # Forward-Left
+            sendSignal("3H")
+            return 6, "BOT3"
+        elif B3CX > S3CX + buffer and B3CY < S3CY - buffer:
+            # Forward-Right
+            sendSignal("3G")
+            return 6, "BOT6"
+        elif B3CX < S3CX - buffer and B3CY > S3CY + buffer:
+            # Backward-Left
+            sendSignal("3J")
+            return 6, "BOT3"
+        elif B3CX > S3CX + buffer and B3CY > S3CY + buffer:
+            # Backward-Right
+            sendSignal("3I")
+            return 6, "BOT3"
+        elif S3CX - buffer <= B3CX <= S3CX + buffer and B3CY < S3CY - buffer:
+            # Forward
+            sendSignal("3B")
+            return 6, "BOT3"
+        elif S3CX - buffer <= B3CX <= S3CX + buffer and B3CY > S3CY + buffer:
+            # Backward
+            sendSignal("3C")
+            return 6, "BOT3"
+        elif B3CX < S3CX - buffer and S3CY - buffer <= B3CY <= S3CY + buffer:
+            # Forward-Left
+            sendSignal("3H")
+            return 6, "BOT3"
+        elif B3CX > S3CX + buffer and S3CY - buffer <= B3CY <= S3CY + buffer:
+            # Forward-Right
+            sendSignal("3G")
+            return 6, "BOT3"
+        elif S3CX - buffer <= B3CX <= S3CX + buffer and S3CY - buffer <= B3CY <= S3CY + buffer:
+            # Idle
+            sendSignal("3A")
+            return 0, "BOT4"
 
 
 if __name__ == "__main__":
