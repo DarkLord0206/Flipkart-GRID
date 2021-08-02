@@ -1771,7 +1771,7 @@ def main():
     cv2.destroyAllWindows()
 
 
-def runLogicBOT(bot: StoreB, turn: StoreT, dest: StoreD, img, p, operationNo, q):
+def runLogicBOT(bot: StoreB, turn: StoreT,st:StoreS, dest: StoreD, img, p, operationNo, q):
     # BOT moving forward towards turn
     if operationNo == 0:
 
@@ -1926,15 +1926,15 @@ def runLogicBOT(bot: StoreB, turn: StoreT, dest: StoreD, img, p, operationNo, q)
         if bot.BCX < turn.TCX - buffer and bot.BCY < turn.TCY - buffer:
             # Forward-Right
             sendSignal("3G")
-            return 4,"BOT3"
+            return 4, "BOT3"
         elif bot.BCX > turn.TCX + buffer and bot.BCY < turn.TCY - buffer:
             # Backward-Right
             sendSignal("3I")
-            return 4,"BOT3"
+            return 4, "BOT3"
         elif bot.BCX < turn.TCX - buffer and bot.BCY > turn.TCY + buffer:
             # Forward-Left
             sendSignal("3H")
-            return 4,"BOT3"
+            return 4, "BOT3"
         elif bot.BCX > turn.TCX + buffer and bot.BCY > turn.TCY + buffer:
             signal = "3J"  # Backward-Left
             sendSignal(signal)
@@ -1955,28 +1955,22 @@ def runLogicBOT(bot: StoreB, turn: StoreT, dest: StoreD, img, p, operationNo, q)
             return p, q
         elif bot.BCX < turn.TCX - buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
             signal = "3B"  # Forward
-            sendSignal(signal)
-            p = 4
-            q = "BOturn.T"
-            return p, q
+            sendSignal("3B")
+            return 4,"BOT3"
         elif bot.BCX > turn.TCX + buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
-            signal = "3C"  # Backward
-            sendSignal(signal)
-            p = 4
-            q = "BOturn.T"
-            return p, q
+            # Backward
+            sendSignal("3C")
+            return 4, "BOT3"
         elif turn.TCX - buffer <= bot.BCX <= turn.TCX + buffer and turn.TCY - buffer <= bot.BCY <= turn.TCY + buffer:
-            signal = "3A"  # Idle
+            # Idle
             sendSignal("3A")
-            p = 5
-            q = "BOturn.T"
-            return p, q
+            return 5, "BOT3"
 
     #  BOT3 moving turning at T3 towards S3
     if operationNo == 5:
 
         B3Vu = unit_vector(bot.BV)  # Making into unit vector
-        S3Vu = unit_vector(S3V)  # Making into unit vector
+        S3Vu = unit_vector(st.SV)  # Making into unit vector
 
         angle = angle_between(B3Vu, S3Vu)
         angleDeg = angle * 57.29577952326092822 // 1
@@ -1986,70 +1980,66 @@ def runLogicBOT(bot: StoreB, turn: StoreT, dest: StoreD, img, p, operationNo, q)
         Uy = math.sin(math.radians(bufferAngle)) * 100 // 1
         # print(Ux, Uy)
 
-        cv2.line(img, (B3CX, B3CY), (S3CX, S3CY), (0, 255, 255), 2)
-        cv2.line(img, (B3CX, B3CY), (B3CX + int(Uy), B3CY + int(Ux)), (255, 255, 0), 2)
-        cv2.line(img, (B3CX, B3CY), (B3CX - int(Uy), B3CY + int(Ux)), (255, 255, 0), 2)
+        cv2.line(img, (bot.BCX, bot.BCY), (st.SCX, st.SCY), (0, 255, 255), 2)
+        cv2.line(img, (bot.BCX, bot.BCY), (bot.BCX + int(Uy), bot.BCY + int(Ux)), (255, 255, 0), 2)
+        cv2.line(img, (bot.BCX, bot.BCY), (bot.BCX - int(Uy), bot.BCY + int(Ux)), (255, 255, 0), 2)
 
         if angleDeg > bufferAngle:
-            signal = "3D"  # Turn Right
-            sendSignal(signal)
-            p = 5
-            q = "BOT3"
-            return p, q
+            # Turn Right
+            sendSignal("3D")
+            return 5, "BOT3"
         elif angleDeg <= bufferAngle:
-            signal = "3A"  # Idle
-            sendSignal(signal)
-            p = 6
-            q = "BOT3"
-            return p, q
+            # Idle
+            sendSignal("3A")
+            return 6, "BOT3"
 
     # BOT3 moving backwards towards S3
     if operationNo == 6:
 
-        cv2.line(img, (B3CX, B3CY), (S3CX, S3CY), (0, 255, 255), 2)
-        # cv2.line(img, (S3CX - buffer, S3CY - buffer), (S3CX + buffer, S3CY - buffer), (255, 255, 0), 2)
-        # cv2.line(img, (S3CX + buffer, S3CY - buffer), (S3CX + buffer, S3CY + buffer), (255, 255, 0), 2)
-        # cv2.line(img, (S3CX + buffer, S3CY + buffer), (S3CX - buffer, S3CY + buffer), (255, 255, 0), 2)
-        # cv2.line(img, (S3CX - buffer, S3CY + buffer), (S3CX - buffer, S3CY - buffer), (255, 255, 0), 2)
+        cv2.line(img, (bot.BCX, bot.BCY), (st.SCX, st.SCY), (0, 255, 255), 2)
+        # cv2.line(img, (st.SCX - buffer, st.SCY - buffer), (st.SCX + buffer, st.SCY - buffer), (255, 255, 0), 2)
+        # cv2.line(img, (st.SCX + buffer, st.SCY - buffer), (st.SCX + buffer, st.SCY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (st.SCX + buffer, st.SCY + buffer), (st.SCX - buffer, st.SCY + buffer), (255, 255, 0), 2)
+        # cv2.line(img, (st.SCX - buffer, st.SCY + buffer), (st.SCX - buffer, st.SCY - buffer), (255, 255, 0), 2)
 
-        cv2.line(img, (0, S3CY - buffer), (imgx, S3CY - buffer), (255, 255, 0), 2)
-        cv2.line(img, (S3CX + buffer, 0), (S3CX + buffer, imgy), (255, 255, 0), 2)
-        cv2.line(img, (imgx, S3CY + buffer), (0, S3CY + buffer), (255, 255, 0), 2)
-        cv2.line(img, (S3CX - buffer, imgy), (S3CX - buffer, 0), (255, 255, 0), 2)
+        cv2.line(img, (0, st.SCY - buffer), (imgx, st.SCY - buffer), (255, 255, 0), 2)
+        cv2.line(img, (st.SCX + buffer, 0), (st.SCX + buffer, imgy), (255, 255, 0), 2)
+        cv2.line(img, (imgx, st.SCY + buffer), (0, st.SCY + buffer), (255, 255, 0), 2)
+        cv2.line(img, (st.SCX - buffer, imgy), (st.SCX - buffer, 0), (255, 255, 0), 2)
 
-        if B3CX < S3CX - buffer and B3CY < S3CY - buffer:
+        if bot.BCX < st.SCX - buffer and bot.BCY < st.SCY - buffer:
             # Forward-Left
             sendSignal("3H")
             return 6, "BOT3"
-        elif B3CX > S3CX + buffer and B3CY < S3CY - buffer:
+        elif bot.BCX > st.SCX + buffer and bot.BCY < st.SCY - buffer:
             # Forward-Right
             sendSignal("3G")
             return 6, "BOT6"
-        elif B3CX < S3CX - buffer and B3CY > S3CY + buffer:
+        elif bot.BCX < st.SCX - buffer and bot.BCY > st.SCY + buffer:
             # Backward-Left
             sendSignal("3J")
             return 6, "BOT3"
-        elif B3CX > S3CX + buffer and B3CY > S3CY + buffer:
+        elif bot.BCX > st.SCX + buffer and bot.BCY > st.SCY + buffer:
             # Backward-Right
             sendSignal("3I")
             return 6, "BOT3"
-        elif S3CX - buffer <= B3CX <= S3CX + buffer and B3CY < S3CY - buffer:
+        elif st.SCX - buffer <= bot.BCX <= st.SCX + buffer and bot.BCY < st.SCY - buffer:
             # Forward
             sendSignal("3B")
             return 6, "BOT3"
-        elif S3CX - buffer <= B3CX <= S3CX + buffer and B3CY > S3CY + buffer:
+        elif st.SCX - buffer <= bot.BCX <= st.SCX + buffer and bot.BCY > st.SCY + buffer:
             # Backward
             sendSignal("3C")
             return 6, "BOT3"
-        elif B3CX < S3CX - buffer and S3CY - buffer <= B3CY <= S3CY + buffer:
+        elif bot.BCX < st.SCX - buffer and st.SCY - buffer <= bot.BCY <= st.SCY + buffer:
             # Forward-Left
             sendSignal("3H")
             return 6, "BOT3"
-        elif B3CX > S3CX + buffer and S3CY - buffer <= B3CY <= S3CY + buffer:
+        elif bot.BCX > st.SCX + buffer and st.SCY - buffer <= bot.BCY <= st.SCY + buffer:
             # Forward-Right
             sendSignal("3G")
             return 6, "BOT3"
-        elif S3CX - buffer <= B3CX <= S3CX + buffer and S3CY - buffer <= B3CY <= S3CY + buffer:
+        elif st.SCX - buffer <= bot.BCX <= st.SCX + buffer and st.SCY - buffer <= bot.BCY <= st.SCY + buffer:
             # Idle
             sendSignal("3A")
             return 0, "BOT4"
