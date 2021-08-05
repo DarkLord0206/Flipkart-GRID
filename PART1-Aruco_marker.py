@@ -10,6 +10,7 @@ from video import get_dims, get_video_type, findArucoMarkers
 imgx = 1280
 imgy = 720
 
+
 class Store:
     def __init__(self, x, y, vx, vy, name, misc, num):
         self.x = x
@@ -23,10 +24,10 @@ class Store:
         self.num = num
 
 
-B1 = Store(0, 0, 0, -1, "B1", ("BOT1", "1"), "1")
-B2 = Store(0, 0, 0, -1, "B2", ("BOT2", "2"), "2")
-B3 = Store(0, 0, 0, -1, "B3", ("BOT3", "3"), "3")
-B4 = Store(0, 0, 0, -1, "B4", ("BOT4", "4"), "4")
+B1 = Store(0, 0, 0, -1, "B1", ("BOT1", "1"), 1)
+B2 = Store(0, 0, 0, -1, "B2", ("BOT2", "2"), 2)
+B3 = Store(0, 0, 0, -1, "B3", ("BOT3", "3"), 3)
+B4 = Store(0, 0, 0, -1, "B4", ("BOT4", "4"), 4)
 
 S1 = Store(imgx, 0, 0, -1, "S1", (), "1")
 S2 = Store(imgx, 0, 0, -1, "S2", (), "2")
@@ -37,7 +38,6 @@ D1 = Store(imgx, imgy, -1, 0, "D1", (), "1")
 D2 = Store(imgx, imgy, -1, 0, "D2", (), "2")
 D3 = Store(imgx, imgy, -1, 0, "D3", (), "3")
 D4 = Store(imgx, imgy, -1, 0, "D4", (), "4")
-
 
 T1 = Store(0, imgy, 0, -1, "T1", (), "1")
 T2 = Store(0, imgy, 0, -1, "T2", (), "2")
@@ -87,75 +87,58 @@ def sendSignal(signal):
     print(signal)
 
 
-def runLogicBOT1(img, p, operationNo, q):
-    # BOT1 moving forward towards T1
+def runLogicBOT(bot: Store, turn: Store, dest: Store, img, p, operationNo, q):
+    # bot moving forward towards turn
     if operationNo == 0:
-
-        cv2.line(img, (B1CX, B1CY), (T1CX, T1CY), (0, 255, 255), 2)
+        cv2.line(img, (bot.x, bot.y), (turn.x, turn.y), (0, 255, 255), 2)
         # cv2.line(img, (T1CX-buffer, T1CY-buffer), (T1CX+buffer, T1CY-buffer), (255, 255, 0), 2)
         # cv2.line(img, (T1CX+buffer, T1CY-buffer), (T1CX+buffer, T1CY+buffer), (255, 255, 0), 2)
         # cv2.line(img, (T1CX+buffer, T1CY+buffer), (T1CX-buffer, T1CY+buffer), (255, 255, 0), 2)
         # cv2.line(img, (T1CX-buffer, T1CY+buffer), (T1CX-buffer, T1CY-buffer), (255, 255, 0), 2)
 
-        cv2.line(img, (0, T1CY - buffer), (imgx, T1CY - buffer), (255, 255, 0), 2)
-        cv2.line(img, (T1CX + buffer, 0), (T1CX + buffer, imgy), (255, 255, 0), 2)
-        cv2.line(img, (imgx, T1CY + buffer), (0, T1CY + buffer), (255, 255, 0), 2)
-        cv2.line(img, (T1CX - buffer, imgy), (T1CX - buffer, 0), (255, 255, 0), 2)
+        cv2.line(img, (0, turn.y - buffer), (imgx, turn.y - buffer), (255, 255, 0), 2)
+        cv2.line(img, (turn.x + buffer, 0), (turn.x + buffer, imgy), (255, 255, 0), 2)
+        cv2.line(img, (imgx, turn.y + buffer), (0, turn.y + buffer), (255, 255, 0), 2)
+        cv2.line(img, (turn.x - buffer, imgy), (turn.x - buffer, 0), (255, 255, 0), 2)
 
-        if B1CX < T1CX - buffer and B1CY < T1CY - buffer:
-            signal = "1H"  # Forward-Left
+        if bot.x < turn.x - buffer and bot.y < turn.y - buffer:
+            signal = bot.misc[1] + "H"  # Forward-Left
+            sendSignal(signal)
+            return 0, bot.misc[0]
+        if bot.x > turn.x + buffer and bot.y < turn.y - buffer:
+            signal = bot.misc[1]+ "G"  # Forward-Right
+            sendSignal(signal)
+            return 0, bot.misc[0]
+        if bot.x < turn.x - buffer and bot.y > turn.y + buffer:
+            signal = bot.misc[1] + "J"  # Backward-Left
+            sendSignal(signal)
+            return 0, bot.misc[0]
+        if bot.x > turn.x + buffer and bot.y > turn.y + buffer:
+            signal = bot.misc[1] + "I"  # Backward-Right
+            sendSignal(signal)
+            return 0,bot.misc[0]
+        if turn.x - buffer <= bot.x <= turn.x + buffer and bot.y < turn.y - buffer:
+            signal = bot.misc[1]+ "B"  # Forward
+            sendSignal(signal)
+            return 0,bot.misc[0]
+        if turn.x - buffer <= bot.x <= turn.x + buffer and bot.y > turn.y + buffer:
+            signal = bot.misc[1]+ "C"  # Backward
+            sendSignal(signal)
+            return 0,bot.misc[0]
+        if bot.x < turn.x - buffer and turn.y - buffer <= bot.y <= turn.y + buffer:
+            signal = bot.misc[1]+ "J"  # Backward-Left
+            sendSignal(signal)
+            return 0,bot.misc[0]
+        if bot.x > turn.x + buffer and turn.y - buffer <= bot.y <= turn.y + buffer:
+            signal = bot.misc[1]+ "I"  # Backward-Right
             sendSignal(signal)
             p = 0
             q = "BOT1"
-            return p, q
-        if B1CX > T1CX + buffer and B1CY < T1CY - buffer:
-            signal = "1G"  # Forward-Right
+            return 0,bot.misc[0]
+        if turn.x - buffer <= bot.x <= turn.x + buffer and turn.y - buffer <= bot.y <= turn.y + buffer:
+            signal = bot.misc[1]+ "A"  # Idle
             sendSignal(signal)
-            p = 0
-            q = "BOT1"
-            return p, q
-        if B1CX < T1CX - buffer and B1CY > T1CY + buffer:
-            signal = "1J"  # Backward-Left
-            sendSignal(signal)
-            p = 0
-            q = "BOT1"
-            return p, q
-        if B1CX > T1CX + buffer and B1CY > T1CY + buffer:
-            signal = "1I"  # Backward-Right
-            sendSignal(signal)
-            p = 0
-            q = "BOT1"
-            return p, q
-        if T1CX - buffer <= B1CX <= T1CX + buffer and B1CY < T1CY - buffer:
-            signal = "1B"  # Forward
-            sendSignal(signal)
-            p = 0
-            q = "BOT1"
-            return p, q
-        if T1CX - buffer <= B1CX <= T1CX + buffer and B1CY > T1CY + buffer:
-            signal = "1C"  # Backward
-            sendSignal(signal)
-            p = 0
-            q = "BOT1"
-            return p, q
-        if B1CX < T1CX - buffer and T1CY - buffer <= B1CY <= T1CY + buffer:
-            signal = "1J"  # Backward-Left
-            sendSignal(signal)
-            p = 0
-            q = "BOT1"
-            return p, q
-        if B1CX > T1CX + buffer and T1CY - buffer <= B1CY <= T1CY + buffer:
-            signal = "1I"  # Backward-Right
-            sendSignal(signal)
-            p = 0
-            q = "BOT1"
-            return p, q
-        if T1CX - buffer <= B1CX <= T1CX + buffer and T1CY - buffer <= B1CY <= T1CY + buffer:
-            signal = "1A"  # Idle
-            sendSignal(signal)
-            p = 1
-            q = "BOT1"
-            return p, q
+            return 1,bot.misc[0]
 
     # BOT1 moving turning at T1 towards D1
     if operationNo == 1:
@@ -170,9 +153,9 @@ def runLogicBOT1(img, p, operationNo, q):
         Uy = math.sin(math.radians(bufferAngle)) * 100 // 1
         # print(Ux, Uy)
 
-        cv2.line(img, (B1CX, B1CY), (D1CX, D1CY), (0, 255, 255), 2)
-        cv2.line(img, (B1CX, B1CY), (B1CX - int(Ux), B1CY - int(Uy)), (255, 255, 0), 2)
-        cv2.line(img, (B1CX, B1CY), (B1CX - int(Ux), B1CY + int(Uy)), (255, 255, 0), 2)
+        cv2.line(img, (B1CX, bot.y), (D1CX, D1CY), (0, 255, 255), 2)
+        cv2.line(img, (B1CX, bot.y), (B1CX - int(Ux), bot.y - int(Uy)), (255, 255, 0), 2)
+        cv2.line(img, (B1CX, bot.y), (B1CX - int(Ux), bot.y + int(Uy)), (255, 255, 0), 2)
 
         if angleDeg > bufferAngle:
             signal = "1D"  # Turn Right
